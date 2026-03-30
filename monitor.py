@@ -27,27 +27,50 @@ fs = firestore.client()
 start_time = time.time()
 
 def handle_data(event):
-    if event.data is None or time.time() - start_time < 5: 
-        return # Skip old data on startup
+    # 1. Log that an event was received
+    print(f"\n[🕒 {time.ctime()}] 📥 Data Change Detected at: {event.path}")
 
-    # Example: /users/UID/devices/DEV01/history/TIMESTAMP
+    # 2. Skip initial data sync or empty data
+    if event.data is None:
+        print(" -> Data is empty, skipping.")
+        return
+        
+    if time.time() - start_time < 5: 
+        print(" -> Initializing: Skipping old historical data.")
+        return 
+
+    # 3. Parse Path
     path_parts = event.path.strip('/').split('/')
-    if len(path_parts) < 5: return
+    if len(path_parts) < 5: 
+        print(f" -> Path too short ({len(path_parts)} levels). Expected 5.")
+        return
     
     uid = path_parts[0]
+    device_id = path_parts[2]
     data = event.data
     
-    # Logic: Get limits from Firestore and compare
+    print(f" -> Processing User: {uid} | Device: {device_id}")
+    
+    # 4. Fetch Limits from Firestore
+    print(f" -> Fetching limits from Firestore for {uid}...")
     user_ref = fs.collection('users').document(uid).get()
+    
     if user_ref.exists:
         limits = user_ref.to_dict()
-        daily_limit = float(limits.get('dailylimit', 100))
+        daily_limit = float(limits.get('dailylimit', 0))
         current_usage = float(data.get('energy', 0))
         
+        print(f" -> Current Energy: {current_usage} kWh | Daily Limit: {daily_limit} kWh")
+        
+        # 5. Trigger Check
         if current_usage >= daily_limit:
-            print(f"ALERT: User {uid} reached limit!")
+            print(f"🔥 TRIGGER: Limit reached! Sending notification for {uid}...")
+            # Your notification code goes here
+        else:
+            print(" ✅ Usage within limits. No action taken.")
+    else:
+        print(f" ❌ Error: User document {uid} not found in Firestore.")
 
 # Start the Listener
 db.reference('users').listen(handle_data)
-print("Service running...")
-while True: time.sleep(1)
+print("🚀 Energy Monitor Service is running... Waiting for data.")
