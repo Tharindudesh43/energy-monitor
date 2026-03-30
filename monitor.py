@@ -71,6 +71,13 @@ def handle_data(event):
     else:
         print(f" ❌ Error: User document {uid} not found in Firestore.")
 
+def debug_listener(event):
+    print(f"--- DEBUG EVENT ---")
+    print(f"Path: {event.path}")
+    print(f"Data: {event.data}")
+    print(f"-------------------")
+
 # Start the Listener
-db.reference('users').listen(handle_data)
+db.reference('/').listen(debug_listener)
+# db.reference('users').listen(handle_data)
 print("🚀 Energy Monitor Service is running... Waiting for data.")
