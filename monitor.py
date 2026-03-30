@@ -7,14 +7,12 @@ import json
 
 firebase_config = os.environ.get('FIREBASE_CONFIG')
 
-
 # Initialize Firebase
 if firebase_config:
     # On the server (Heroku/VPS), we read from the environment variable
     cred_dict = json.loads(firebase_config)
     cred = credentials.Certificate(cred_dict)
 else:
-    # On your laptop, we use the local file (which is in .gitignore)
     try:
         cred = credentials.Certificate("serviceAccountKey.json")
     except Exception as e:
