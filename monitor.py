@@ -78,6 +78,6 @@ def debug_listener(event):
     print(f"-------------------")
 
 # Start the Listener
-db.reference('/').listen(debug_listener)
-# db.reference('users').listen(handle_data)
+#db.reference('/').listen(debug_listener)
+db.reference('users').listen(handle_data)
 print("🚀 Energy Monitor Service is running... Waiting for data.")
