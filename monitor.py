@@ -125,7 +125,7 @@ class PowerMonitor:
             user_data = user_doc.to_dict()
             normal_limit = user_data.get('NormalWattLimit')
             peak_limit = user_data.get('PeakWattLimit')
-            fcm_token = user_data.get('fcm_token')
+            fcm_token = user_data.get('fcmToken')
             
             return normal_limit, peak_limit, fcm_token
         except Exception as e:
