@@ -10,7 +10,7 @@ else:
 
 firebase_admin.initialize_app(cred)
 
-FCM_TOKEN = "eFtxSA0TQNmKQzwVg92YYb:APA91bHw3UrlRuKO93m1vAfX_C9pXj4gRn85siTLxwTEfrQ5DXCeuqv7d0DA5N3pP3lz3VCIoe7AGm_IPbWF4oat7-UmUNjIqkllKphpFmCSkkW8SnKfHRY"
+FCM_TOKEN = "eFyhZk5rQtaRt5m8TZMUrz:APA91bGsBrHulN7fGgqzBDg3J3ifbugGK1O_PWI-RtUtaDJHUFS2d3eLFbL6fh2c6I8TiJghYzFWxF-IRZdXF8szC33VfD1fTuGtn2zg1QPcpFYBB1vcFMU"
 
 count = 1
 while True:
